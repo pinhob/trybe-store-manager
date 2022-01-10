@@ -1,5 +1,8 @@
 const Joi = require('@hapi/joi');
-const { createProduct, findProductByName } = require('../models/products.model');
+const { createProduct,
+  findProductByName,
+  getProducts,
+  getProductById } = require('../models/products.model');
 const errorConstructor = require('../utils/errorHandling');
 
 const productSchema = Joi.object({
@@ -19,6 +22,26 @@ const createProductService = async (name, quantity) => {
   return { _id, name, quantity };
 };
 
+const getAllProductsService = async () => {
+  const products = await getProducts();
+
+  return { products };
+};
+
+const getProductByIdService = async (id) => {
+  const idLength = id.length === 24;
+
+  if (!idLength) throw errorConstructor(422, 'Wrong id format');
+
+  const product = await getProductById(id);
+  
+  if (!product) throw errorConstructor(422, 'Wrong id format');
+
+  return { ...product };
+};
+
 module.exports = {
   createProductService,
+  getProductByIdService,
+  getAllProductsService,
 };

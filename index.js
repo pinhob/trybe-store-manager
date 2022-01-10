@@ -1,6 +1,8 @@
 const express = require('express');
 
-const { createProductController } = require('./controllers/products.controller');
+const { createProductController,
+  getAllProductsController,
+  getProductByIdController } = require('./controllers/products.controller');
 const { errorMiddleware } = require('./middlewares/errorMiddleware');
 
 const port = 3000;
@@ -14,7 +16,11 @@ app.get('/', (_request, response) => {
 });
 
 // feito com a ajuda do Wesley Maia
-app.post('/products/', createProductController);
+app.post('/products', createProductController);
+
+app.get('/products', getAllProductsController);
+
+app.get('/products/:id', getProductByIdController);
 
 app.use(errorMiddleware);
 
