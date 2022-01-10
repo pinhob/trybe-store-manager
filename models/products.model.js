@@ -3,13 +3,22 @@ const connect = require('./connection');
 const createProduct = async (name, quantity) => {
   const conn = await connect();
 
-  const { insertedId } = conn.collection('products').insertOne({
+  const { insertedId } = await conn.collection('products').insertOne({
     name, quantity,
   });
 
-  return { insertedId };
+  return { _id: insertedId };
 };
 
-module.export = {
+const findProductByName = async (name) => {
+  const conn = await connect();
+
+  const product = await conn.collection('products').findOne({ name });
+
+  return product;
+};
+
+module.exports = {
   createProduct,
+  findProductByName,
 };

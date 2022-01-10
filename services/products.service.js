@@ -1,5 +1,5 @@
 const Joi = require('@hapi/joi');
-const { createProduct } = require('../models/products.model');
+const { createProduct, findProductByName } = require('../models/products.model');
 const errorConstructor = require('../utils/errorHandling');
 
 const productSchema = Joi.object({
@@ -8,20 +8,17 @@ const productSchema = Joi.object({
 });
 
 const createProductService = async (name, quantity) => {
-  // const validate = productSchema.validate(name, quantity);
+  const { error } = productSchema.validate({ name, quantity });
+  const productNameExists = await findProductByName(name);
 
-  console.log('xablau');
-  console.log('validate:', validate);
+  if (error) throw errorConstructor(422, error.message);
+  if (productNameExists) throw errorConstructor(422, 'Product already exists');
 
-  // if (validate.error) throw errorConstructor(422, validate.error.message);
+  const { _id } = await createProduct(name, quantity);
 
-  const newProductId = await createProduct(name, quantity);
-
-  console.log('id', newProductId);
-
-  return { newProductId, name, quantity };
+  return { _id, name, quantity };
 };
 
-module.export = {
+module.exports = {
   createProductService,
 };

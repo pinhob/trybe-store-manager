@@ -13,7 +13,8 @@ app.get('/', (_request, response) => {
   response.send();
 });
 
-app.post('/products', createProductController);
+// feito com a ajuda do Wesley Maia
+app.post('/products/', createProductController);
 
 app.use(errorMiddleware);
 
