@@ -2,7 +2,8 @@ const Joi = require('@hapi/joi');
 const { createProduct,
   findProductByName,
   getProducts,
-  getProductById } = require('../models/products.model');
+  getProductById,
+  updateProductById } = require('../models/products.model');
 const errorConstructor = require('../utils/errorHandling');
 
 const productSchema = Joi.object({
@@ -40,8 +41,18 @@ const getProductByIdService = async (id) => {
   return { ...product };
 };
 
+const updateProductByIdService = async (id, name, quantity) => {
+  const { error } = productSchema.validate({ name, quantity });
+  const product = await updateProductById(id, name, quantity);
+
+  if (error) throw errorConstructor(422, error.message);
+
+  return { ...product };
+};
+
 module.exports = {
   createProductService,
   getProductByIdService,
   getAllProductsService,
+  updateProductByIdService,
 };
