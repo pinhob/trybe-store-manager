@@ -11,6 +11,26 @@ const createSales = async (salesArray) => {
   return itensSoldObj;
 };
 
+const getSales = async () => {
+  const conn = await connect();
+
+  const allSales = await conn.collection('sales').find({}).toArray();
+
+  return { sales: allSales };
+};
+
+const getSalesById = async (id) => {
+  const conn = await connect();
+
+  const sales = await conn.collection('sales').findOne(new ObjectId(id));
+
+  if (!sales) return false; 
+
+  return sales;
+};
+
 module.exports = {
   createSales,
+  getSales,
+  getSalesById,
 };
