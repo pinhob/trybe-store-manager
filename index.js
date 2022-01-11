@@ -5,6 +5,8 @@ const { createProductController,
   getProductByIdController,
   updateProductByIdServiceController,
   deleteProductByIdController } = require('./controllers/products.controller');
+
+const { createSalesController } = require('./controllers/sales.controller');
 const { errorMiddleware } = require('./middlewares/errorMiddleware');
 
 const port = 3000;
@@ -27,6 +29,8 @@ app.get('/products/:id', getProductByIdController);
 app.put('/products/:id', updateProductByIdServiceController);
 
 app.delete('/products/:id', deleteProductByIdController);
+
+app.post('/sales', createSalesController);
 
 app.use(errorMiddleware);
 
