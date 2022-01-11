@@ -24,8 +24,6 @@ const getProducts = async () => {
 
   const allProducts = await conn.collection('products').find({}).toArray();
 
-  console.log('ALL PRODUCTS \n', allProducts);
-
   return allProducts;
 };
 
@@ -55,10 +53,23 @@ const updateProductById = async (id, name, quantity) => {
   return productObj;
 };
 
+const deleteProductById = async (id) => {
+  const conn = await connect();
+
+  const productId = { _id: new ObjectId(id) };
+  const productObj = await getProductById(id);
+  const deleteProduct = await conn.collection('products').deleteOne(productId);
+
+  if (!deleteProduct) return false;
+
+  return productObj;
+};
+
 module.exports = {
   createProduct,
   findProductByName,
   getProducts,
   getProductById,
   updateProductById,
+  deleteProductById,
 };

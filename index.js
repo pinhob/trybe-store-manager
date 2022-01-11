@@ -3,7 +3,8 @@ const express = require('express');
 const { createProductController,
   getAllProductsController,
   getProductByIdController,
-  updateProductByIdServiceController } = require('./controllers/products.controller');
+  updateProductByIdServiceController,
+  deleteProductByIdController } = require('./controllers/products.controller');
 const { errorMiddleware } = require('./middlewares/errorMiddleware');
 
 const port = 3000;
@@ -24,6 +25,8 @@ app.get('/products', getAllProductsController);
 app.get('/products/:id', getProductByIdController);
 
 app.put('/products/:id', updateProductByIdServiceController);
+
+app.delete('/products/:id', deleteProductByIdController);
 
 app.use(errorMiddleware);
 

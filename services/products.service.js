@@ -3,7 +3,8 @@ const { createProduct,
   findProductByName,
   getProducts,
   getProductById,
-  updateProductById } = require('../models/products.model');
+  updateProductById,
+  deleteProductById } = require('../models/products.model');
 const errorConstructor = require('../utils/errorHandling');
 
 const productSchema = Joi.object({
@@ -50,9 +51,24 @@ const updateProductByIdService = async (id, name, quantity) => {
   return { ...product };
 };
 
+const deleteProductByIdService = async (id) => {
+  const idLength = id.length === 24;
+
+  if (!idLength) throw errorConstructor(422, 'Wrong id format');
+
+  const deletedProduct = await deleteProductById(id);
+
+  console.log('Deleted', deletedProduct);
+  
+  if (!deletedProduct) throw errorConstructor(422, 'Wrong id format');
+
+  return deletedProduct;
+};
+
 module.exports = {
   createProductService,
   getProductByIdService,
   getAllProductsService,
   updateProductByIdService,
+  deleteProductByIdService,
 };
