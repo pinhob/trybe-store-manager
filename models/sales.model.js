@@ -29,8 +29,25 @@ const getSalesById = async (id) => {
   return sales;
 };
 
+const updateSalesById = async (id, salesObjReq) => {
+  const conn = await connect();
+
+  const salesId = new ObjectId(id);
+
+  const updateValues = { $set: { itensSold: salesObjReq } };
+
+  const updateSales = await conn.collection('sales').updateOne({ _id: salesId }, updateValues);
+
+  if (!updateSales) return false;
+
+  const sales = await getSalesById(id);
+
+  return sales;
+};
+
 module.exports = {
   createSales,
   getSales,
   getSalesById,
+  updateSalesById,
 };

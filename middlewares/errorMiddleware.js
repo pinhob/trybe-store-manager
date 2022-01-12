@@ -2,8 +2,6 @@ const errorMiddleware = (err, req, res, _next) => {
   if (err.status) {
     const { status, message } = err;
 
-    console.log(status);
-
     if (status === 404) {
       return res.status(status).json({ err: { code: 'not_found', message } });
     }

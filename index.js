@@ -8,7 +8,8 @@ const { createProductController,
 
 const { createSalesController,
   getSalesController,
-  getSalesByIdController } = require('./controllers/sales.controller');
+  getSalesByIdController,
+  updateSalesByIdController } = require('./controllers/sales.controller');
 const { errorMiddleware } = require('./middlewares/errorMiddleware');
 
 const port = 3000;
@@ -37,6 +38,8 @@ app.post('/sales', createSalesController);
 app.get('/sales', getSalesController);
 
 app.get('/sales/:id', getSalesByIdController);
+
+app.put('/sales/:id', updateSalesByIdController);
 
 app.use(errorMiddleware);
 
