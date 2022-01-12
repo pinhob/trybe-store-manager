@@ -11,12 +11,16 @@ const salesSchema = Joi.object({
   quantity: Joi.number().min(1).required(),
 });
 
-const createSalesService = async (salesArray) => {
+const validateSalesWithJoi = (salesArray) => {
   salesArray.forEach(({ productId, quantity }) => {
-      const { error } = salesSchema.validate({ productId, quantity });
+    const { error } = salesSchema.validate({ productId, quantity });
 
-      if (error) throw errorConstructor(422, 'Wrong product ID or invalid quantity');
-    });
+    if (error) throw errorConstructor(422, 'Wrong product ID or invalid quantity');
+  });
+};
+
+const createSalesService = async (salesArray) => {
+  validateSalesWithJoi(salesArray);
 
   const itensSold = await createSales(salesArray);
 
@@ -43,22 +47,12 @@ const getSalesByIdService = async (id) => {
   return { ...sales };
 };
 
-const updateSalesByIdService = async (id, salesObjReq) => {
-  // salesObjReq.forEach(({ productId, quantity }) => {
-  //   const { error } = salesObjReq.validate({ productId, quantity });
-
-  //   if (error) throw errorConstructor(422, 'Wrong product ID or invalid quantity');
-  // });
-
-  console.log(salesObjReq);
-
-    const { error } = salesSchema.validate({ salesObjReq });
+const updateSalesByIdService = async (id, salesArr) => {
+  validateSalesWithJoi(salesArr);
   
-    if (error) throw errorConstructor(422, 'Wrong product ID or invalid quantity');
-
-    const updatedSales = await updateSalesById(id, salesObjReq);
+  const updatedSales = await updateSalesById(id, salesArr);
   
-    return { updatedSales };
+  return { ...updatedSales };
 };
 
 const deleteSalesByIdService = async (id) => {

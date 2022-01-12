@@ -41,9 +41,9 @@ const getSalesByIdController = async (req, res, next) => {
 const updateSalesByIdController = async (req, res, next) => {
   try {
     const { id } = req.params;
-    const salesObjReq = req.body;
+    const salesArr = req.body;
 
-    const updatedSales = await updateSalesByIdService(id, salesObjReq);
+    const updatedSales = await updateSalesByIdService(id, salesArr);
 
     return res.status(200).json(updatedSales);
   } catch (error) {
