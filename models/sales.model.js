@@ -45,9 +45,24 @@ const updateSalesById = async (id, salesObjReq) => {
   return sales;
 };
 
+const deleteSalesById = async (id) => {
+  const conn = await connect();
+
+  const salesId = { _id: new ObjectId(id) };
+
+  const salesInfos = await getSalesById(id);
+
+  const deleteSales = await conn.collection('sales').deleteOne(salesId);
+
+  if (!deleteSales) return false; 
+
+  return salesInfos;
+};
+
 module.exports = {
   createSales,
   getSales,
   getSalesById,
   updateSalesById,
+  deleteSalesById,
 };

@@ -9,7 +9,8 @@ const { createProductController,
 const { createSalesController,
   getSalesController,
   getSalesByIdController,
-  updateSalesByIdController } = require('./controllers/sales.controller');
+  updateSalesByIdController,
+  deleteSalesByIdController } = require('./controllers/sales.controller');
 const { errorMiddleware } = require('./middlewares/errorMiddleware');
 
 const port = 3000;
@@ -40,6 +41,8 @@ app.get('/sales', getSalesController);
 app.get('/sales/:id', getSalesByIdController);
 
 app.put('/sales/:id', updateSalesByIdController);
+
+app.delete('/sales/:id', deleteSalesByIdController);
 
 app.use(errorMiddleware);
 

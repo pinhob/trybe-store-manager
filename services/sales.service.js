@@ -2,7 +2,8 @@ const Joi = require('@hapi/joi');
 const { createSales,
   getSales,
   getSalesById,
-  updateSalesById } = require('../models/sales.model');
+  updateSalesById,
+  deleteSalesById } = require('../models/sales.model');
 const errorConstructor = require('../utils/errorHandling');
 
 const salesSchema = Joi.object({
@@ -43,13 +44,33 @@ const getSalesByIdService = async (id) => {
 };
 
 const updateSalesByIdService = async (id, salesObjReq) => {
-    const { error } = salesSchema.validate(salesObjReq);
+  // salesObjReq.forEach(({ productId, quantity }) => {
+  //   const { error } = salesObjReq.validate({ productId, quantity });
+
+  //   if (error) throw errorConstructor(422, 'Wrong product ID or invalid quantity');
+  // });
+
+  console.log(salesObjReq);
+
+    const { error } = salesSchema.validate({ salesObjReq });
   
     if (error) throw errorConstructor(422, 'Wrong product ID or invalid quantity');
 
     const updatedSales = await updateSalesById(id, salesObjReq);
   
-    return { ...updatedSales };
+    return { _id: id, itensSold: salesObjReq };
+};
+
+const deleteSalesByIdService = async (id) => {
+  const idLength = id.length === 24;
+
+  if (!idLength) throw errorConstructor(422, 'Wrong sale ID format');
+
+  const deletedSales = await deleteSalesById(id);
+
+  if (!deletedSales) throw errorConstructor(422, 'Wrong sale ID format');
+  
+  return deletedSales;
 };
 
 module.exports = {
@@ -57,4 +78,5 @@ module.exports = {
   getSalesService,
   getSalesByIdService,
   updateSalesByIdService,
+  deleteSalesByIdService,
 };
