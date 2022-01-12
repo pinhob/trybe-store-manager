@@ -58,7 +58,7 @@ const updateSalesByIdService = async (id, salesObjReq) => {
 
     const updatedSales = await updateSalesById(id, salesObjReq);
   
-    return { _id: id, itensSold: salesObjReq };
+    return { updatedSales };
 };
 
 const deleteSalesByIdService = async (id) => {
